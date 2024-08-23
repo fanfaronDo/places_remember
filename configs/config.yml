@@ -4,6 +4,5 @@ server:
 
 elasticsearch:
   index: "places"
-  host: "172.20.10.2"
+  host: "192.168.56.103"
   port: "9200"
-

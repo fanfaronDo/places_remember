@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/csv"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	types "main/internal/domain/place"
@@ -23,14 +24,22 @@ var (
 )
 
 func main() {
+
+	flagPath := flag.String("path", "", "Define path file to load data")
+	flag.Parse()
+	if *flagPath == "" {
+		log.Fatalf("Use: <script> --path ./some_path")
+		os.Exit(1)
+	}
+
 	conf := cnf.ReadInConfig()
 
 	host := "http://" + conf.ElasticHost + ":" + conf.ElasticPort
 	fmt.Println("Connect to elasticsearch:", host)
 	// indexName = conf.ElasticIndex
 
-	records := ReadCsvFile("../materials/data.csv")
-
+	//records := ReadCsvFile("../materials/data.csv")
+	records := ReadCsvFile(*flagPath)
 	elasticConfig := elasticsearch.Config{
 		Addresses: []string{
 			host,
