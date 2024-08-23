@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  elasticsearch:
+    image: elasticsearch:8.4.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true  
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=true
+    volumes:
+      - elk:/usr/share/elasticsearch/config
+    networks:
+      elk: 
+        ipv4_address: 172.20.10.2
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+    
+  kibana:
+    image: kibana:8.4.2
+    container_name: kibana
+    environment:
+    - ELASTICSEARCH_URL=http://172.20.10.2:9200
+    networks:
+      elk:
+        ipv4_address: 172.20.10.3
+
+
+networks:
+  elk:
+    driver: bridge
+    ipam: 
+      config:
+        - subnet: 172.20.10.0/28
+
+volumes:
+  elk:

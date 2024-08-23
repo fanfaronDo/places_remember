@@ -1,0 +1,9 @@
+server:
+  host: "localhost"
+  port: "8888"
+
+elasticsearch:
+  index: "places"
+  host: "172.20.10.2"
+  port: "9200"
+
